@@ -1,0 +1,46 @@
+# Podman Compose — Real-Time Markdown Editor
+# Development setup with bind-mounts and hot-reloads
+#
+# Usage:
+#   npm run dev             # Start Vite Dev Server on host (instant hot-reload)
+#   podman-compose up -d    # Start PHP-FPM + Nginx container
+#   podman-compose down     # Stop container
+#   podman-compose build    # Build/Rebuild development image (under 5 seconds)
+#   podman-compose logs -f  # Follow logs
+#
+
+name: md-editor
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: md-editor:dev
+    container_name: md-editor-app
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8000
+      - LOG_CHANNEL=stderr
+      - DB_CONNECTION=sqlite
+      - SESSION_DRIVER=file
+      - CACHE_STORE=file
+      - FILESYSTEM_DISK=local
+    volumes:
+      # Bind-mount the codebase so changes on host are reflected inside the container instantly
+      - .:/var/www/html:z
+      # Keep storage directory persistent
+      - md-editor-storage:/var/www/html/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  md-editor-storage:

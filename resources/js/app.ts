@@ -1,3 +1,6 @@
+import 'highlight.js/styles/github.css';
+import 'github-markdown-css/github-markdown.css';
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';

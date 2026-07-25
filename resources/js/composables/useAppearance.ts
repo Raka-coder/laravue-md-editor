@@ -8,6 +8,7 @@ export type UseAppearanceReturn = {
     appearance: Ref<Appearance>;
     resolvedAppearance: ComputedRef<ResolvedAppearance>;
     updateAppearance: (value: Appearance) => void;
+    toggleAppearance: () => void;
 };
 
 export function updateTheme(value: Appearance): void {
@@ -116,9 +117,15 @@ export function useAppearance(): UseAppearanceReturn {
         updateTheme(value);
     }
 
+    function toggleAppearance() {
+        const next = appearance.value === 'dark' ? 'light' : 'dark';
+        updateAppearance(next);
+    }
+
     return {
         appearance,
         resolvedAppearance,
         updateAppearance,
+        toggleAppearance,
     };
 }
