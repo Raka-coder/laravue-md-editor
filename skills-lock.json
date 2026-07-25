@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "laravel-inertia-vue": {
+      "source": "jasim-k/laravel-agent-skills",
+      "sourceType": "github",
+      "skillPath": "laravel-inertia-vue/SKILL.md",
+      "computedHash": "44f7036955ec0c58926c69c2a0b66f46f55ab8ece05f3f3b8d6397b92530990d"
+    }
+  }
+}
