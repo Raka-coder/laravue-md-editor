@@ -22,14 +22,20 @@ const markdown = ref('# Hello Markdown\n\nStart typing here...');
 const { load: loadDraft, clear: clearDraft } = useDraftStorage(markdown);
 
 // Settings state initialized with localStorage support
-const filename = ref(localStorage.getItem('md-editor:filename') || 'untitled.md');
+const filename = ref(
+    localStorage.getItem('md-editor:filename') || 'untitled.md',
+);
 const activeFont = ref(localStorage.getItem('md-editor:font') || 'mono');
-const isSyncing = ref(localStorage.getItem('md-editor:sync-scroll') !== 'false');
+const isSyncing = ref(
+    localStorage.getItem('md-editor:sync-scroll') !== 'false',
+);
 
 // Listeners to persist settings
 watch(filename, (val) => localStorage.setItem('md-editor:filename', val));
 watch(activeFont, (val) => localStorage.setItem('md-editor:font', val));
-watch(isSyncing, (val) => localStorage.setItem('md-editor:sync-scroll', String(val)));
+watch(isSyncing, (val) =>
+    localStorage.setItem('md-editor:sync-scroll', String(val)),
+);
 
 onMounted(() => {
     const draft = loadDraft();
@@ -61,8 +67,10 @@ function handleScroll(source: HTMLElement, target: HTMLElement) {
     }
 
     if (activeScrollSource === source) {
-        const sourcePercentage = source.scrollTop / (source.scrollHeight - source.clientHeight);
-        target.scrollTop = sourcePercentage * (target.scrollHeight - target.clientHeight);
+        const sourcePercentage =
+            source.scrollTop / (source.scrollHeight - source.clientHeight);
+        target.scrollTop =
+            sourcePercentage * (target.scrollHeight - target.clientHeight);
     }
 
     if (scrollTimeout) {
@@ -109,7 +117,8 @@ function handleImport(content: string) {
 // Copy to Clipboard integration
 function handleCopy() {
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(markdown.value)
+        navigator.clipboard
+            .writeText(markdown.value)
             .then(() => {
                 toast.success('Markdown copied to clipboard!');
             })
@@ -149,25 +158,25 @@ function handleChangeFont(font: string) {
         />
 
         <!-- Desktop Split Pane Workspace -->
-        <div class="hidden flex-1 overflow-hidden md:flex flex-col">
+        <div class="hidden flex-1 flex-col overflow-hidden md:flex">
             <!-- Formatting & Preference Toolbar -->
-            <FormattingToolbar 
-                :is-syncing="isSyncing" 
+            <FormattingToolbar
+                :is-syncing="isSyncing"
                 :active-font="activeFont"
                 @action="handleToolbarAction"
                 @toggle-sync="isSyncing = !isSyncing"
                 @change-font="handleChangeFont"
             />
-            
+
             <div class="flex flex-1 overflow-hidden">
                 <!-- Editor Pane -->
                 <div
                     class="overflow-hidden border-r border-[#e3e3e0] dark:border-[#3E3E3A]"
                     :style="{ width: `${splitRatio * 100}%` }"
                 >
-                    <EditorPanel 
-                        ref="editorPanelRef" 
-                        v-model="markdown" 
+                    <EditorPanel
+                        ref="editorPanelRef"
+                        v-model="markdown"
                         :active-font="activeFont"
                         @scroll="handleEditorScroll"
                     />
@@ -178,7 +187,9 @@ function handleChangeFont(font: string) {
                     class="relative flex w-2 cursor-col-resize items-center justify-center bg-transparent transition-colors hover:bg-emerald-500/20 active:bg-emerald-500/30"
                     @mousedown.prevent="startDrag"
                 >
-                    <div class="h-8 w-0.5 rounded-full bg-[#e3e3e0] dark:bg-[#3E3E3A]" />
+                    <div
+                        class="h-8 w-0.5 rounded-full bg-[#e3e3e0] dark:bg-[#3E3E3A]"
+                    />
                 </div>
 
                 <!-- Preview Pane -->
@@ -186,9 +197,9 @@ function handleChangeFont(font: string) {
                     class="flex-1 overflow-hidden"
                     :style="{ width: `${(1 - splitRatio) * 100}%` }"
                 >
-                    <PreviewPanel 
-                        ref="previewPanelRef" 
-                        :html="parsed.html.value" 
+                    <PreviewPanel
+                        ref="previewPanelRef"
+                        :html="parsed.html.value"
                         :filename="filename"
                         @scroll="handlePreviewScroll"
                     />
@@ -199,29 +210,27 @@ function handleChangeFont(font: string) {
         <!-- Mobile: Tabbed View (Reka UI Tabs) -->
         <div class="flex flex-1 flex-col md:hidden">
             <Tabs default-value="edit" class="flex flex-1 flex-col">
-                <div class="flex justify-center border-b border-[#e3e3e0] px-4 py-2 dark:border-[#3E3E3A]">
+                <div
+                    class="flex justify-center border-b border-[#e3e3e0] px-4 py-2 dark:border-[#3E3E3A]"
+                >
                     <TabsList>
-                        <TabsTrigger value="edit">
-                            Edit
-                        </TabsTrigger>
-                        <TabsTrigger value="preview">
-                            Preview
-                        </TabsTrigger>
+                        <TabsTrigger value="edit"> Edit </TabsTrigger>
+                        <TabsTrigger value="preview"> Preview </TabsTrigger>
                     </TabsList>
                 </div>
 
                 <TabsContent value="edit" class="flex-1 overflow-hidden">
-                    <EditorPanel 
-                        ref="editorPanelRef" 
-                        v-model="markdown" 
+                    <EditorPanel
+                        ref="editorPanelRef"
+                        v-model="markdown"
                         :active-font="activeFont"
                     />
                 </TabsContent>
 
                 <TabsContent value="preview" class="flex-1 overflow-hidden">
-                    <PreviewPanel 
-                        ref="previewPanelRef" 
-                        :html="parsed.html.value" 
+                    <PreviewPanel
+                        ref="previewPanelRef"
+                        :html="parsed.html.value"
                         :filename="filename"
                     />
                 </TabsContent>
@@ -246,22 +255,54 @@ function handleChangeFont(font: string) {
     color: #d4d4d4;
 }
 
-.dark .hljs-keyword { color: #569cd6; }
-.dark .hljs-string { color: #ce9178; }
-.dark .hljs-number { color: #b5cea8; }
-.dark .hljs-comment { color: #6a9955; }
-.dark .hljs-function { color: #dcdcaa; }
-.dark .hljs-title { color: #dcdcaa; }
-.dark .hljs-built_in { color: #4ec9b0; }
-.dark .hljs-attr { color: #9cdcfe; }
-.dark .hljs-attribute { color: #9cdcfe; }
-.dark .hljs-literal { color: #569cd6; }
-.dark .hljs-type { color: #4ec9b0; }
-.dark .hljs-meta { color: #dcdcaa; }
-.dark .hljs-tag { color: #569cd6; }
-.dark .hljs-name { color: #569cd6; }
-.dark .hljs-selector-class { color: #d7ba7d; }
-.dark .hljs-selector-id { color: #d7ba7d; }
+.dark .hljs-keyword {
+    color: #569cd6;
+}
+.dark .hljs-string {
+    color: #ce9178;
+}
+.dark .hljs-number {
+    color: #b5cea8;
+}
+.dark .hljs-comment {
+    color: #6a9955;
+}
+.dark .hljs-function {
+    color: #dcdcaa;
+}
+.dark .hljs-title {
+    color: #dcdcaa;
+}
+.dark .hljs-built_in {
+    color: #4ec9b0;
+}
+.dark .hljs-attr {
+    color: #9cdcfe;
+}
+.dark .hljs-attribute {
+    color: #9cdcfe;
+}
+.dark .hljs-literal {
+    color: #569cd6;
+}
+.dark .hljs-type {
+    color: #4ec9b0;
+}
+.dark .hljs-meta {
+    color: #dcdcaa;
+}
+.dark .hljs-tag {
+    color: #569cd6;
+}
+.dark .hljs-name {
+    color: #569cd6;
+}
+.dark .hljs-selector-class {
+    color: #d7ba7d;
+}
+.dark .hljs-selector-id {
+    color: #d7ba7d;
+}
 
 pre code.hljs {
     display: block;

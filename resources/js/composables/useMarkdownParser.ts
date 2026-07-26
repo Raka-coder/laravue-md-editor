@@ -21,10 +21,12 @@ export function useMarkdownParser() {
                     ? hljs.highlight(str, { language: lang }).value
                     : null;
 
-            const code = highlighted ?? str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;');
+            const code =
+                highlighted ??
+                str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
 
             return `<pre class="hljs"><code>${code}</code></pre>`;
         },
@@ -50,37 +52,48 @@ export function useMarkdownParser() {
             (m) => (blocks.push(m), `\x00CODEBLOCK${blocks.length - 1}\x00`),
         );
 
-        const blockTag = /<(div|center|section|article|aside|figure|figcaption|details|summary|header|footer|nav|main|table|thead|tbody|tfoot|tr|td|th|fieldset|form)\b[^>]*>[\s\S]*?<\/\1>/gi;
+        const blockTag =
+            /<(div|center|section|article|aside|figure|figcaption|details|summary|header|footer|nav|main|table|thead|tbody|tfoot|tr|td|th|fieldset|form)\b[^>]*>[\s\S]*?<\/\1>/gi;
 
         const processed = guarded.replace(blockTag, (block) => {
             let result = block;
             result = result.replace(
                 /\[!\[([^\]]*)\]\(([^)]*)\)\]\(([^)]*)\)/g,
                 '<a href="$3"><img src="$2" alt="$1" />',
-             );
-             result = result.replace(
-                 /!\[([^\]]*)\]\(([^)]*)\)/g,
-                 '<img src="$2" alt="$1" />',
-             );
-             result = result.replace(
-                 /\[([^\]]*)\]\(([^)]*)\)/g,
-                 '<a href="$2">$1</a>',
-             );
+            );
+            result = result.replace(
+                /!\[([^\]]*)\]\(([^)]*)\)/g,
+                '<img src="$2" alt="$1" />',
+            );
+            result = result.replace(
+                /\[([^\]]*)\]\(([^)]*)\)/g,
+                '<a href="$2">$1</a>',
+            );
 
-             return result;
+            return result;
         });
 
-        return processed.replace(/\x00CODEBLOCK(\d+)\x00/g, (_, i) => blocks[+i]);
+        return processed.replace(
+            /\x00CODEBLOCK(\d+)\x00/g,
+            (_, i) => blocks[+i],
+        );
     }
 
     const parse = (rawMarkdown: string) => {
         const preprocessed = preprocessHtmlBlocks(rawMarkdown);
         const rawHtml = md.render(preprocessed);
-        
+
         // Ensure DOMPurify leaves class="mermaid", input components, and HTML attrs intact
         const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
             ADD_TAGS: ['pre', 'code', 'span', 'input'],
-            ADD_ATTR: ['class', 'style', 'type', 'checked', 'disabled', 'align'],
+            ADD_ATTR: [
+                'class',
+                'style',
+                'type',
+                'checked',
+                'disabled',
+                'align',
+            ],
         });
 
         const cleanText = rawMarkdown.replace(/[#*`_\[\]()\-+]/g, '').trim();
@@ -89,7 +102,9 @@ export function useMarkdownParser() {
         const charCount = ref(rawMarkdown.length);
 
         // Estimate 200 words per minute reading speed
-        const readTimeMinutes = computed(() => Math.max(1, Math.ceil(wordCount.value / 200)));
+        const readTimeMinutes = computed(() =>
+            Math.max(1, Math.ceil(wordCount.value / 200)),
+        );
 
         return {
             html: ref(sanitizedHtml),

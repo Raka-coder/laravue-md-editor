@@ -1,7 +1,9 @@
 import { ref } from 'vue';
 
 export function useSplitPane(initialRatio = 0.52) {
-    const splitRatio = ref(Number(localStorage.getItem('md-editor:split-ratio')) || initialRatio);
+    const splitRatio = ref(
+        Number(localStorage.getItem('md-editor:split-ratio')) || initialRatio,
+    );
     const isDragging = ref(false);
 
     const startDrag = () => {
@@ -10,8 +12,8 @@ export function useSplitPane(initialRatio = 0.52) {
 
     const onDrag = (e: MouseEvent) => {
         if (!isDragging.value) {
-return;
-}
+            return;
+        }
 
         const newRatio = e.clientX / window.innerWidth;
 
@@ -22,8 +24,8 @@ return;
 
     const endDrag = () => {
         if (!isDragging.value) {
-return;
-}
+            return;
+        }
 
         isDragging.value = false;
         localStorage.setItem('md-editor:split-ratio', String(splitRatio.value));

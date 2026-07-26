@@ -1,6 +1,15 @@
 import type { EditorView } from '@codemirror/view';
 
-type FormatType = 'bold' | 'italic' | 'code' | 'heading' | 'link' | 'quote' | 'list' | 'orderedList' | 'taskList';
+type FormatType =
+    | 'bold'
+    | 'italic'
+    | 'code'
+    | 'heading'
+    | 'link'
+    | 'quote'
+    | 'list'
+    | 'orderedList'
+    | 'taskList';
 
 const WRAPPERS: Record<string, [string, string]> = {
     bold: ['**', '**'],
@@ -12,9 +21,7 @@ function wrapSelection(view: EditorView, before: string, after: string): void {
     const { from, to } = view.state.selection.main;
     const selected = view.state.sliceDoc(from, to);
     const insert = `${before}${selected}${after}`;
-    const cursorPos = selected
-        ? from + insert.length
-        : from + before.length;
+    const cursorPos = selected ? from + insert.length : from + before.length;
     view.dispatch({
         changes: { from, to, insert },
         selection: { anchor: cursorPos },
@@ -70,7 +77,10 @@ export function formatAction(view: EditorView, type: FormatType): void {
             const text = selected || 'link text';
             view.dispatch({
                 changes: { from, to, insert: `[${text}](url)` },
-                selection: { anchor: from + text.length + 3, head: from + text.length + 6 },
+                selection: {
+                    anchor: from + text.length + 3,
+                    head: from + text.length + 6,
+                },
             });
             view.focus();
             break;

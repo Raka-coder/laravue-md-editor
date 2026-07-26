@@ -21,11 +21,14 @@ onMounted(() => {
 });
 
 // Watch HTML changes to render diagrams
-watch(() => props.html, () => {
-    nextTick(() => {
-        renderMermaid();
-    });
-});
+watch(
+    () => props.html,
+    () => {
+        nextTick(() => {
+            renderMermaid();
+        });
+    },
+);
 
 // Re-initialize mermaid when appearance changes
 watch(resolvedAppearance, (newTheme) => {
@@ -44,16 +47,18 @@ const previewScroller = ref<HTMLDivElement | null>(null);
 
 function renderMermaid() {
     const elements = document.querySelectorAll('.mermaid');
-    
+
     if (elements.length === 0) {
         return;
     }
-    
-    mermaid.run({
-        querySelector: '.mermaid',
-    }).catch(err => {
-        console.error('Mermaid render error:', err);
-    });
+
+    mermaid
+        .run({
+            querySelector: '.mermaid',
+        })
+        .catch((err) => {
+            console.error('Mermaid render error:', err);
+        });
 }
 
 const emit = defineEmits<{
@@ -61,24 +66,36 @@ const emit = defineEmits<{
 }>();
 
 defineExpose({
-    getScroller: () => previewScroller.value
+    getScroller: () => previewScroller.value,
 });
 </script>
 
 <template>
-    <div class="flex h-full flex-col bg-white dark:bg-[#121215] overflow-hidden">
+    <div
+        class="flex h-full flex-col overflow-hidden bg-white dark:bg-[#121215]"
+    >
         <!-- File Header Tab -->
-        <div class="flex items-center justify-between border-b border-[#e3e3e0] bg-[#fcfcfd] px-4 py-2 dark:border-[#3E3E3A] dark:bg-[#161615]">
-            <span class="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 select-none">
+        <div
+            class="flex items-center justify-between border-b border-[#e3e3e0] bg-[#fcfcfd] px-4 py-2 dark:border-[#3E3E3A] dark:bg-[#161615]"
+        >
+            <span
+                class="font-mono text-xs font-bold text-slate-500 select-none dark:text-slate-400"
+            >
                 {{ filename || 'untitled.md' }}
             </span>
-            <span class="rounded bg-slate-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] font-bold text-slate-500 dark:text-slate-400 select-none uppercase">
+            <span
+                class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-500 uppercase select-none dark:bg-zinc-800 dark:text-slate-400"
+            >
                 Preview
             </span>
         </div>
 
-         <!-- HTML Renderer Container -->
-         <div ref="previewScroller" class="flex-1 overflow-auto p-6" @scroll="emit('scroll', e)">
+        <!-- HTML Renderer Container -->
+        <div
+            ref="previewScroller"
+            class="flex-1 overflow-auto p-6"
+            @scroll="emit('scroll', e)"
+        >
             <div
                 class="markdown-body min-h-full bg-white dark:bg-[#121215] dark:text-[#EDEDEC]"
                 v-html="html"
@@ -100,8 +117,8 @@ defineExpose({
 
 .dark .markdown-body {
     --color-canvas-default: #121215 !important;
-    --color-fg-default: #EDEDEC !important;
-    --color-border-default: #3E3E3A !important;
+    --color-fg-default: #ededec !important;
+    --color-border-default: #3e3e3a !important;
     --color-canvas-subtle: #161615 !important;
 }
 

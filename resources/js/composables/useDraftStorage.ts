@@ -36,8 +36,8 @@ export function useDraftStorage(content: Ref<string>) {
         content,
         (val) => {
             if (timer) {
-clearTimeout(timer);
-}
+                clearTimeout(timer);
+            }
 
             timer = setTimeout(() => save(val), DEBOUNCE_MS);
         },

@@ -21,8 +21,8 @@ let view: EditorView | null = null;
 
 onMounted(() => {
     if (!editorContainer.value) {
-return;
-}
+        return;
+    }
 
     const startState = EditorState.create({
         doc: props.modelValue,
@@ -37,19 +37,19 @@ return;
                 {
                     key: 'Mod-b',
                     run: (v) => {
- formatAction(v, 'bold');
+                        formatAction(v, 'bold');
 
- return true; 
-}
+                        return true;
+                    },
                 },
                 {
                     key: 'Mod-i',
                     run: (v) => {
- formatAction(v, 'italic');
+                        formatAction(v, 'italic');
 
- return true; 
-}
-                }
+                        return true;
+                    },
+                },
             ]),
             EditorView.updateListener.of((update) => {
                 if (update.docChanged) {
@@ -87,18 +87,21 @@ function handleScroll(e: Event) {
     emit('scroll', e);
 }
 
-watch(() => props.modelValue, (newVal) => {
-    if (view && newVal !== view.state.doc.toString()) {
-        view.dispatch({
-            changes: { from: 0, to: view.state.doc.length, insert: newVal }
-        });
-    }
-});
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        if (view && newVal !== view.state.doc.toString()) {
+            view.dispatch({
+                changes: { from: 0, to: view.state.doc.length, insert: newVal },
+            });
+        }
+    },
+);
 
 function triggerAction(actionType: any) {
     if (!view) {
-return;
-}
+        return;
+    }
 
     view.focus();
     formatAction(view, actionType);
@@ -106,19 +109,22 @@ return;
 
 defineExpose({
     triggerAction,
-    getScroller: () => editorContainer.value?.querySelector('.cm-scroller') as HTMLElement | null
+    getScroller: () =>
+        editorContainer.value?.querySelector(
+            '.cm-scroller',
+        ) as HTMLElement | null,
 });
 </script>
 
 <template>
-    <div class="h-full w-full overflow-hidden flex flex-col">
-        <div 
-            ref="editorContainer" 
-            class="flex-1 overflow-hidden text-sm leading-relaxed" 
+    <div class="flex h-full w-full flex-col overflow-hidden">
+        <div
+            ref="editorContainer"
+            class="flex-1 overflow-hidden text-sm leading-relaxed"
             :class="{
                 'font-mono': activeFont === 'mono',
                 'font-sans': activeFont === 'sans',
-                'font-serif': activeFont === 'serif'
+                'font-serif': activeFont === 'serif',
             }"
         />
     </div>
@@ -134,11 +140,11 @@ defineExpose({
 }
 .dark .cm-editor {
     background-color: #121215;
-    color: #EDEDEC;
+    color: #ededec;
 }
 .dark .cm-gutters {
     background-color: #121215;
-    border-right: 1px solid #3E3E3A;
+    border-right: 1px solid #3e3e3a;
     color: #5e5e5a;
 }
 .cm-gutters {

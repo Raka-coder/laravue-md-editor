@@ -3,8 +3,16 @@ import { useScrollSync } from '../useScrollSync';
 
 describe('useScrollSync', () => {
     it('calculates proportional scroll positions correctly', () => {
-        const source = { scrollTop: 50, scrollHeight: 200, clientHeight: 100 } as HTMLElement;
-        const target = { scrollTop: 0, scrollHeight: 400, clientHeight: 100 } as HTMLElement;
+        const source = {
+            scrollTop: 50,
+            scrollHeight: 200,
+            clientHeight: 100,
+        } as HTMLElement;
+        const target = {
+            scrollTop: 0,
+            scrollHeight: 400,
+            clientHeight: 100,
+        } as HTMLElement;
 
         const { sync } = useScrollSync();
         sync(source, target);
@@ -15,8 +23,16 @@ describe('useScrollSync', () => {
     });
 
     it('does not sync when isSyncing is disabled', () => {
-        const source = { scrollTop: 50, scrollHeight: 200, clientHeight: 100 } as HTMLElement;
-        const target = { scrollTop: 0, scrollHeight: 400, clientHeight: 100 } as HTMLElement;
+        const source = {
+            scrollTop: 50,
+            scrollHeight: 200,
+            clientHeight: 100,
+        } as HTMLElement;
+        const target = {
+            scrollTop: 0,
+            scrollHeight: 400,
+            clientHeight: 100,
+        } as HTMLElement;
 
         const { sync, isSyncing } = useScrollSync();
         isSyncing.value = false;
