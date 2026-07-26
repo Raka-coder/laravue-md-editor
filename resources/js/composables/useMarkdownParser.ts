@@ -57,16 +57,17 @@ export function useMarkdownParser() {
             result = result.replace(
                 /\[!\[([^\]]*)\]\(([^)]*)\)\]\(([^)]*)\)/g,
                 '<a href="$3"><img src="$2" alt="$1" />',
-            );
-            result = result.replace(
-                /!\[([^\]]*)\]\(([^)]*)\)/g,
-                '<img src="$2" alt="$1" />',
-            );
-            result = result.replace(
-                /\[([^\]]*)\]\(([^)]*)\)/g,
-                '<a href="$2">$1</a>',
-            );
-            return result;
+             );
+             result = result.replace(
+                 /!\[([^\]]*)\]\(([^)]*)\)/g,
+                 '<img src="$2" alt="$1" />',
+             );
+             result = result.replace(
+                 /\[([^\]]*)\]\(([^)]*)\)/g,
+                 '<a href="$2">$1</a>',
+             );
+
+             return result;
         });
 
         return processed.replace(/\x00CODEBLOCK(\d+)\x00/g, (_, i) => blocks[+i]);

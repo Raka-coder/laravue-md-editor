@@ -45,10 +45,10 @@ const previewScroller = ref<HTMLDivElement | null>(null);
 function renderMermaid() {
     const elements = document.querySelectorAll('.mermaid');
     
-    if (elements.length === 0)
-
+    if (elements.length === 0) {
         return;
-
+    }
+    
     mermaid.run({
         querySelector: '.mermaid',
     }).catch(err => {
@@ -77,8 +77,8 @@ defineExpose({
             </span>
         </div>
 
-        <!-- HTML Renderer Container -->
-        <div ref="previewScroller" class="flex-1 overflow-auto p-6" @scroll="e => $emit('scroll', e)">
+         <!-- HTML Renderer Container -->
+         <div ref="previewScroller" class="flex-1 overflow-auto p-6" @scroll="emit('scroll', e)">
             <div
                 class="markdown-body min-h-full bg-white dark:bg-[#121215] dark:text-[#EDEDEC]"
                 v-html="html"
