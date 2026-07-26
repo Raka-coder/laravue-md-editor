@@ -90,12 +90,12 @@ defineExpose({
             </span>
         </div>
 
-         <!-- HTML Renderer Container -->
-         <div
-             ref="previewScroller"
-             class="flex-1 overflow-auto p-6"
-             @scroll="(e) => emit('scroll', e)"
-         >
+        <!-- HTML Renderer Container -->
+        <div
+            ref="previewScroller"
+            class="flex-1 overflow-auto p-6"
+            @scroll="(e) => emit('scroll', e)"
+        >
             <div
                 class="markdown-body min-h-full bg-white dark:bg-[#121215] dark:text-[#EDEDEC]"
                 v-html="html"
@@ -105,24 +105,45 @@ defineExpose({
 </template>
 
 <style>
-/* Override github-markdown-css variables based on theme classes */
+/* Override github-markdown-css variable-based theming.
+   github-markdown.css v5.9.0 uses @media (prefers-color-scheme) to set
+   CSS vars like --fgColor-default, --bgColor-default.
+   When OS is dark but app toggle is light, dark vars bleed in.
+   We override those vars here using our .dark class toggle. */
 .markdown-body {
     font-family: inherit;
-    background-color: transparent !important;
-    --color-canvas-default: #ffffff !important;
-    --color-fg-default: #1b1b18 !important;
-    --color-border-default: #e3e3e0 !important;
-    --color-canvas-subtle: #f5f5f4 !important;
+    --fgColor-default: #1f2328 !important;
+    --bgColor-default: #ffffff !important;
+    --borderColor-default: #d1d9e0 !important;
+    --bgColor-muted: #f6f8fa !important;
 }
 
 .dark .markdown-body {
-    --color-canvas-default: #121215 !important;
-    --color-fg-default: #ededec !important;
-    --color-border-default: #3e3e3a !important;
-    --color-canvas-subtle: #161615 !important;
+    --fgColor-default: #ededec !important;
+    --bgColor-default: #121215 !important;
+    --borderColor-default: #3e3e3a !important;
+    --bgColor-muted: #161615 !important;
 }
 
-/* Custom styles for mermaid diagrams inside the preview */
+/* List disc: Tailwind v4 preflight removes list-style + resets padding.
+   github-markdown.css sets padding-left only via --base-size-* vars.
+   Re-apply both so markers are visible. */
+.markdown-body ul {
+    list-style: disc !important;
+    padding-left: 2em !important;
+}
+
+.markdown-body ol {
+    list-style: decimal !important;
+    padding-left: 2em !important;
+}
+
+/* Image-badge link: stacked badge [![alt](img)](url) loses layout inside <a> */
+.markdown-body a > img {
+    display: inline !important;
+}
+
+/* Mermaid diagrams */
 .mermaid {
     background-color: transparent !important;
     display: flex;
