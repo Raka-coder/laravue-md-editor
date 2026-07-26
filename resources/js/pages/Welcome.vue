@@ -140,14 +140,53 @@ function handleChangeFont(font: string) {
 </script>
 
 <template>
-    <Head title="Markdown Editor" />
+    <Head>
+        <title>Web Markdown Editor - Real-time Markdown Editor & Preview</title>
+        <meta
+            name="description"
+            content="A feature-rich, high-performance web markdown editor featuring live syntax highlighting, split view preview, scroll sync, and layout customization."
+        />
+        <meta
+            name="keywords"
+            content="markdown, markdown editor, live preview, syntax highlighting, scroll sync, split view, web editor, online editor"
+        />
 
-    <div
+        <!-- OpenGraph tags -->
+        <meta
+            property="og:title"
+            content="Web Markdown Editor - Real-time Markdown Editor & Preview"
+        />
+        <meta
+            property="og:description"
+            content="A feature-rich, high-performance web markdown editor featuring live syntax highlighting, split view preview, scroll sync, and layout customization."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Web Markdown Editor" />
+
+        <!-- Twitter Card tags -->
+        <meta name="twitter:card" content="summary" />
+        <meta
+            name="twitter:title"
+            content="Web Markdown Editor - Real-time Markdown Editor & Preview"
+        />
+        <meta
+            name="twitter:description"
+            content="A feature-rich, high-performance web markdown editor featuring live syntax highlighting, split view preview, scroll sync, and layout customization."
+        />
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href="/" />
+    </Head>
+
+    <main
         class="flex h-screen flex-col bg-[#FDFDFC] dark:bg-[#0a0a0a]"
         @mousemove="onDrag"
         @mouseup="endDrag"
         @mouseleave="endDrag"
     >
+        <h1 class="sr-only">
+            Web Markdown Editor - Real-time Markdown Editor & Preview
+        </h1>
         <!-- Menu Bar -->
         <MenuBar
             v-model:filename="filename"
@@ -201,6 +240,7 @@ function handleChangeFont(font: string) {
                         ref="previewPanelRef"
                         :html="parsed.html.value"
                         :filename="filename"
+                        :active-font="activeFont"
                         @scroll="handlePreviewScroll"
                     />
                 </div>
@@ -232,6 +272,7 @@ function handleChangeFont(font: string) {
                         ref="previewPanelRef"
                         :html="parsed.html.value"
                         :filename="filename"
+                        :active-font="activeFont"
                     />
                 </TabsContent>
             </Tabs>
@@ -246,7 +287,7 @@ function handleChangeFont(font: string) {
 
         <!-- Sonner Toaster component for notification feedbacks -->
         <Toaster />
-    </div>
+    </main>
 </template>
 
 <style>

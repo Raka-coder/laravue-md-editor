@@ -156,9 +156,21 @@ defineExpose({
     font-family: inherit;
     outline: none;
 }
+.cm-content {
+    caret-color: #0f172a !important;
+}
+.cm-cursor {
+    border-left-color: #0f172a !important;
+}
 .dark .cm-editor {
     background-color: #121215;
     color: #ededec;
+}
+.dark .cm-content {
+    caret-color: #ededec !important;
+}
+.dark .cm-cursor {
+    border-left-color: #ededec !important;
 }
 .dark .cm-gutters {
     background-color: #121215;

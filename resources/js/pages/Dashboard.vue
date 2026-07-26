@@ -16,7 +16,10 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head>
+        <title>Dashboard - Web Markdown Editor</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <div
         class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"

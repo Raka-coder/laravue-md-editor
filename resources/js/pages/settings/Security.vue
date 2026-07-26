@@ -29,7 +29,10 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Security settings" />
+    <Head>
+        <title>Security Settings - Web Markdown Editor</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <h1 class="sr-only">Security settings</h1>
 

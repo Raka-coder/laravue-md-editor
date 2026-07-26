@@ -28,7 +28,10 @@ const user = computed(() => page.props.auth.user);
 </script>
 
 <template>
-    <Head title="Profile settings" />
+    <Head>
+        <title>Profile Settings - Web Markdown Editor</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <h1 class="sr-only">Profile settings</h1>
 

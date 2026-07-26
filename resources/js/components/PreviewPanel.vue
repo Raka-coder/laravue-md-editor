@@ -6,6 +6,7 @@ import { useAppearance } from '@/composables/useAppearance';
 const props = defineProps<{
     html: string;
     filename: string;
+    activeFont: string;
 }>();
 
 const { resolvedAppearance } = useAppearance();
@@ -73,6 +74,11 @@ defineExpose({
 <template>
     <div
         class="flex h-full flex-col overflow-hidden bg-white dark:bg-[#121215]"
+        :class="{
+            'font-mono': activeFont === 'mono',
+            'font-sans': activeFont === 'sans',
+            'font-serif': activeFont === 'serif',
+        }"
     >
         <!-- File Header Tab -->
         <div

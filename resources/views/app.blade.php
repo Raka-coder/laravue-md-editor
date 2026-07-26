@@ -30,9 +30,30 @@
             }
         </style>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="MD Editor" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+        <meta name="description" content="A premium real-time Web Markdown Editor built with Laravel and Vue 3. Features syntax highlighting, scroll sync, and live preview.">
+        <meta name="keywords" content="markdown, editor, markdown editor, real-time preview, vue 3, laravel, codemirror, web markdown editor">
+        <meta name="author" content="rakarestu">
+
+        {{-- Structured Data for WebApplication --}}
+        <script type="application/ld+json">
+            {
+                "@@context": "https://schema.org",
+                "@@type": "WebApplication",
+                "name": "Web Markdown Editor",
+                "alternateName": "Laravue MD Editor",
+                "description": "A high-performance, real-time markdown editor with split preview pane, syntax highlighting, and live synchronization.",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "All",
+                "browserRequirements": "Requires JavaScript. Requires HTML5."
+            }
+        </script>
 
         @fonts
 
